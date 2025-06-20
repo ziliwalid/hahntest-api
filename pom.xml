@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.taskmanager</groupId>
-    <artifactId>task-manager-backend</artifactId>
+    <groupId>com.testhahn</groupId>
+    <artifactId>hahntestback</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Task Manager Backend</name>
+    <name>Hahn Test Backend</name>
     <description>Task Manager REST API Backend</description>
 
     <properties>
@@ -39,12 +39,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-        <!-- Database Dependencies -->
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
         </dependency>
 
         <!-- Security Dependencies -->
@@ -72,11 +70,13 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Lombok -->
+
+
+        <!-- Database Dependencies -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- Development Tools -->
@@ -122,14 +122,14 @@
                 <configuration>
                     <excludes>
                         <exclude>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-devtools</artifactId>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
                 </configuration>
             </plugin>
 
-            <!-- Maven Compiler Plugin -->
+            <!-- Simplified Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -137,6 +137,9 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
