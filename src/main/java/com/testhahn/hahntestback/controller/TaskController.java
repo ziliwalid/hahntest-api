@@ -8,8 +8,8 @@ import com.testhahn.hahntestback.entity.User;
 import com.testhahn.hahntestback.entity.enums.TaskPriorityEnum;
 import com.testhahn.hahntestback.entity.enums.TaskStatusEnum;
 import com.testhahn.hahntestback.service.TaskService;
+import com.testhahn.hahntestback.service.TaskServiceImpl;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,10 +26,14 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/api/tasks")
-@RequiredArgsConstructor
+
 public class TaskController {
 
     private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @PostMapping
     public ResponseEntity<TaskResponse> createTask(
@@ -228,7 +232,7 @@ public class TaskController {
     public ResponseEntity<Map<String, Object>> getTaskStatistics(@AuthenticationPrincipal User currentUser) {
         log.debug("Fetching task statistics for user: {}", currentUser.getUsername());
 
-        TaskService.TaskStatistics stats = taskService.getTaskStatistics(currentUser.getId());
+        TaskServiceImpl.TaskStatistics stats = taskService.getTaskStatistics(currentUser.getId());
 
         Map<String, Object> response = Map.of(
                 "total", stats.total(),

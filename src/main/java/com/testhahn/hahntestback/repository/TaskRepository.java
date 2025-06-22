@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -32,11 +33,11 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByUserIdAndTitleContainingIgnoreCase(Long userId, String title);
 
     // Overdue tasks for specific user - PURE SPRING DATA JPA!
-    List<Task> findByUserIdAndDueDateBeforeAndStatusIn(Long userId, LocalDateTime currentDate, List<TaskStatusEnum> activeStatuses);
+    List<Task> findByUserIdAndDueDateBeforeAndStatusIn(Long userId, LocalDate currentDate, List<TaskStatusEnum> activeStatuses);
 
     // Statistics queries for specific user - PURE SPRING DATA JPA!
     long countByUserId(Long userId);
     long countByUserIdAndStatus(Long userId, TaskStatusEnum status);
-    long countByUserIdAndDueDateBeforeAndStatusIn(Long userId, LocalDateTime currentDate, List<TaskStatusEnum> activeStatuses);
+    long countByUserIdAndDueDateBeforeAndStatusIn(Long userId, LocalDate currentDate, List<TaskStatusEnum> activeStatuses);
     long countByUserIdAndPriorityIn(Long userId, List<TaskPriorityEnum> criticalPriorities);
 }

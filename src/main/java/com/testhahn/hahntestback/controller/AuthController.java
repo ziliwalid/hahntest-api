@@ -4,6 +4,7 @@ import com.testhahn.hahntestback.dto.auth.AuthResponse;
 import com.testhahn.hahntestback.dto.auth.LoginRequest;
 import com.testhahn.hahntestback.dto.auth.RegisterRequest;
 import com.testhahn.hahntestback.service.AuthService;
+import com.testhahn.hahntestback.service.AuthServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {

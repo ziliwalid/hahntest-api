@@ -11,6 +11,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -49,7 +50,7 @@ public class Task {
     private TaskPriorityEnum priority = TaskPriorityEnum.MEDIUM;
 
     @Column(name = "due_date")
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -67,7 +68,7 @@ public class Task {
     // Business logic helper methods
     public boolean isOverdue() {
         return dueDate != null &&
-                dueDate.isBefore(LocalDateTime.now()) &&
+                dueDate.isBefore(LocalDate.now()) &&
                 status.isActive();
     }
 
