@@ -22,6 +22,10 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // ==============================================
+    // SPRING SECURITY INTEGRATION
+    // ==============================================
+
     // For Spring Security authentication
     @Override
     @Transactional(readOnly = true)
@@ -30,6 +34,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsernameOrEmail(username, username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
+
+    // ==============================================
+    // USER MANAGEMENT METHODS
+    // ==============================================
 
     // Register new user
     public User registerUser(String username, String email, String password, String firstName, String lastName) {

@@ -25,6 +25,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
 
     // Create new task for current user
+    // If the user decides to let the
     public Task createTask(String title, String description, TaskStatusEnum status,
                            TaskPriorityEnum priority, LocalDateTime dueDate, User currentUser) {
         log.debug("Creating task '{}' for user: {}", title, currentUser.getUsername());
