@@ -28,6 +28,7 @@ A comprehensive REST API for task management built with Spring Boot 3.2. This ap
   - Task statistics and analytics
   - Docker containerization
   - PostgreSQL database integration
+  - Comprehensive test suite
 
 ## 🛠️ Technology Stack
 
@@ -35,6 +36,7 @@ A comprehensive REST API for task management built with Spring Boot 3.2. This ap
 - **Database**: PostgreSQL 15
 - **Security**: Spring Security with JWT
 - **Documentation**: Swagger/OpenAPI 3
+- **Testing**: JUnit 5, Mockito, AssertJ
 - **Containerization**: Docker & Docker Compose
 - **Build Tool**: Maven
 - **Java Version**: 17
@@ -85,6 +87,41 @@ A comprehensive REST API for task management built with Spring Boot 3.2. This ap
    ```
 
 The API will be available at `http://localhost:8080`
+
+## 🧪 Testing
+
+The application includes a comprehensive test suite with unit and integration tests.
+
+### Running Tests
+
+```bash
+# Run all tests
+./mvnw test
+
+# Run specific test class
+./mvnw test -Dtest=TaskServiceTest
+
+# Run tests with coverage
+./mvnw test jacoco:report
+```
+
+### Test Structure
+
+```
+src/test/java/
+├── controller/     # Controller unit tests
+├── service/        # Service layer tests  
+├── entity/         # Entity tests
+├── security/       # JWT and security tests
+└── integration/    # Integration tests
+```
+
+### Test Coverage
+
+- **Unit Tests**: Service layer, controllers, entities
+- **Integration Tests**: Full application context
+- **Security Tests**: JWT token validation
+- **Repository Tests**: Database operations
 
 ## 🐳 Docker Configuration
 
@@ -254,146 +291,6 @@ For production deployment, override these via environment variables:
 - `SPRING_DATASOURCE_PASSWORD`
 - `JWT_SECRET`
 
-## 🧪 Testing Strategy
-
-### Testing Framework & Approach
-The application is designed with comprehensive testing in mind using **JUnit 5** as the primary testing framework, along with **Mockito** for mocking and **AssertJ** for fluent assertions.
-
-### Recommended Test Structure
-
-#### **1. Unit Tests**
-- **Service Layer Tests**: Test business logic in isolation
-  - `TaskServiceTest` - CRUD operations, filtering, validation
-  - `UserServiceTest` - User management, authentication logic
-  - `AuthServiceTest` - JWT token generation and validation
-  
-- **Security Tests**: Test JWT functionality
-  - `JwtTokenProviderTest` - Token creation, validation, expiration
-
-#### **2. Integration Tests**
-- **Repository Tests**: Test database interactions with `@DataJpaTest`
-  - `TaskRepositoryTest` - Custom queries, relationships
-  - `UserRepositoryTest` - User lookup methods, constraints
-
-- **Web Layer Tests**: Test REST endpoints with `@WebMvcTest`
-  - `TaskControllerTest` - API endpoints, validation, security
-  - `AuthControllerTest` - Authentication endpoints
-
-#### **3. Test Categories**
-- **Happy Path Testing**: Successful operations and valid data flows
-- **Error Handling**: Exception scenarios and error responses
-- **Security Testing**: Authentication, authorization, and JWT validation
-- **Data Validation**: Input validation and constraint testing
-- **Business Logic**: Task status transitions, user permissions
-
-### Testing Tools & Dependencies
-
-```xml
-<!-- Already included in pom.xml -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-test</artifactId>
-    <scope>test</scope>
-</dependency>
-<dependency>
-    <groupId>org.testcontainers</groupId>
-    <artifactId>postgresql</artifactId>
-    <scope>test</scope>
-</dependency>
-```
-
-### Test Execution Commands
-```bash
-# Run all tests
-./mvnw test
-
-# Run tests with coverage
-./mvnw test jacoco:report
-
-# Run specific test class
-./mvnw test -Dtest=TaskServiceTest
-
-# Run integration tests only
-./mvnw test -Dtest=*IntegrationTest
-```
-
-### Testing Best Practices Implemented
-
-#### **Mocking Strategy**
-- Use `@MockBean` for Spring components in web tests
-- Use `@Mock` for unit tests with Mockito
-- Mock external dependencies (database, JWT provider)
-
-#### **Test Data Management**
-- Use `@TestConfiguration` for test-specific beans
-- Implement test data builders for consistent object creation
-- Use `@Sql` annotations for database state setup
-
-#### **Assertion Strategy**
-- Prefer AssertJ for readable assertions
-- Test both positive and negative scenarios
-- Verify mock interactions with `verify()`
-
-#### **Test Organization**
-```java
-@DisplayName("Task Service Tests")
-class TaskServiceTest {
-    
-    @Test
-    @DisplayName("Should create task successfully")
-    void shouldCreateTaskSuccessfully() {
-        // Given - setup test data
-        // When - execute the operation
-        // Then - verify results and interactions
-    }
-}
-```
-
-### Integration Testing with TestContainers
-
-The application supports **TestContainers** for true integration testing:
-
-```java
-@Testcontainers
-@SpringBootTest
-class TaskIntegrationTest {
-    
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine")
-            .withDatabaseName("testdb")
-            .withUsername("test")
-            .withPassword("test");
-}
-```
-
-### Test Coverage Goals
-
-- **Unit Tests**: 80%+ coverage for service and security layers
-- **Integration Tests**: Critical user journeys and database operations
-- **API Tests**: All endpoints with authentication scenarios
-- **Edge Cases**: Error handling, validation, and boundary conditions
-
-### Continuous Integration Testing
-
-The project is structured for CI/CD pipeline integration:
-
-```yaml
-# Example GitHub Actions workflow
-- name: Run Tests
-  run: ./mvnw clean test
-  
-- name: Generate Test Report
-  run: ./mvnw jacoco:report
-```
-
-### Performance Testing Considerations
-
-For load testing and performance validation:
-- **JMeter** scripts for API endpoint testing
-- **Database connection pool** testing under load
-- **JWT token validation** performance testing
-- **Concurrent user** scenario testing
-
 ## 📦 Building for Production
 
 ### Maven Build
@@ -448,10 +345,6 @@ This starts:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 🐛 Troubleshooting
 
 ### Common Issues
@@ -483,3 +376,26 @@ This project is licensed under the MIT License - see the LICENSE file for detail
    # Skip tests if needed
    ./mvnw clean package -DskipTests
    ```
+
+5. **Test Failures**
+   ```bash
+   # Run specific test
+   ./mvnw test -Dtest=TaskServiceTest
+   
+   # Run tests with debug info
+   ./mvnw test -X
+   ```
+
+## 📋 Reference Documentation
+
+For further reference, please consider the following sections:
+
+### Spring Boot Documentation
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
+* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/html/)
+* [Create an OCI image](https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/html/#build-image)
+* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html)
+* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/current/reference/html/data.html#data.sql.jpa-and-spring-data)
+* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.devtools)
+* [Validation](https://docs.spring.io/spring-boot/docs/current/reference/html/io.html#io.validation)
+* [Spring Web](https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web)
